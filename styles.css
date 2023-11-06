@@ -60,3 +60,41 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }*/
+.helper.bg-light img {
+  transition: all 0.35s ease-in;
+}
+.helper.bg-light:hover img {
+  transform: translate(-50%, -50%) scale(1.05);
+  transition: all 0.35s ease-out;
+}
+.helper.bg-green {
+  transition: all 0.35s ease-in;
+}
+.helper.bg-green img {
+  transition: all 0.35s ease-in;
+}
+.helper.bg-green .text-block-2 {
+  transition: all 0.35s ease-in;
+}
+.helper.bg-green:hover {
+  background: white;
+  transition: all 0.35s ease-out;
+}
+.helper.bg-green:hover img {
+  mix-blend-mode: difference;
+  transform: translate3D(2.5px, -2.5px, 0);
+  transition: all 0.35s ease-out;
+}
+.helper.bg-green:hover .text-block-2 {
+  color: black;
+  transform: translate3D(2.5px, 0, 0);
+  transition: all 0.35s ease-out;
+}
+a.modal-button {
+  font-weight: 600;
+  transition: all 0.35s ease-in;
+}
+a.modal-button:hover {
+  font-weight: 600;
+  transition: all 0.35s ease-out;
+}
