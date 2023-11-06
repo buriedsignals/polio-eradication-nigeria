@@ -91,7 +91,6 @@ html {
   transition: all 0.35s ease-out;
 }
 a.modal-button {
-  font-weight: 600;
   transition: all 0.35s ease-in;
 }
 a.modal-button:hover {
