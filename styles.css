@@ -1,0 +1,62 @@
+html {
+  height: auto;
+  overflow-x: hidden;
+}
+.text-underline-effect {
+  position: relative;
+  display: inline-block;
+}
+.text-underline-effect::before {
+  content: "";
+  position: absolute;
+  top: 100%; left: 50%;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  mix-blend-mode: difference;
+  transform: translate3D(-50%, -50%, 0);
+}
+.modal-panel {
+  overflow-y: scroll;
+}
+/* Firefox */
+.modal * {
+  scrollbar-width: auto;
+  scrollbar-color: #a05454 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+.modal *::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal *::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.modal *::-webkit-scrollbar-thumb {
+  background-color: #a05454;
+  border-radius: 0px;
+  border: 0px none #ffffff;
+}
+.nav-wrapper.is-burger {
+  display: flex !important;
+}
+.nav-wrapper.is-burger .nav-scroll {
+  background-color: rgba(255, 251, 239, .1) !important;
+}
+.nav-wrapper.is-burger .nav-link.is-active {
+  color: #92361b !important;
+}
+.nav-wrapper.is-burger .nav-link {
+  color: black !important;
+}
+.nav-scroll-wrapper {
+  pointer-events: none;
+}
+/*.text-gradient {
+  background: linear-gradient(#803119, #e7b782 50%, #f5eed3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}*/
