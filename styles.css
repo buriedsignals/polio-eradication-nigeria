@@ -104,3 +104,10 @@ a.modal-button.story:hover img {
   transform: translate3d(-50%, -50%, 0) scale3d(1.05, 1.05, 1.05);
   transition: all 0.35s ease-out;
 }
+
+#date-label {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 32px;
+  z-index: 10;
+}

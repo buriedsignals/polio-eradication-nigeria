@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       duration: 5000,
       bearing: 0,
       center: [10.119, 5.97],
-      zoom: 6
+      zoom: 4.5
     },
     'nigeria-risk-2': {
       duration: 5000,
