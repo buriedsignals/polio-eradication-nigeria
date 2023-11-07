@@ -97,3 +97,10 @@ a.modal-button:hover {
   font-weight: 600;
   transition: all 0.35s ease-out;
 }
+a.modal-button.story img {
+  transition: all 0.35s ease-in;
+}
+a.modal-button.story:hover img {
+  transform: translate3d(-50%, -50%, 0) scale3d(1.05, 1.05, 1.05);
+  transition: all 0.35s ease-out;
+}
