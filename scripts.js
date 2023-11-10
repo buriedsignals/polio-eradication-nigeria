@@ -165,10 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Embed Flourish Script */
 
   const flourishParent = document.querySelector('.add-flourish .mb-scrollytelling_content-wrapper .text-rich-text')
-  var container = document.createElement('div')
+  let container = document.createElement('div')
   container.className = 'flourish-embed flourish-chart'
   container.setAttribute('data-src', 'visualisation/15224980')
-  var scriptElement = document.createElement('script');
+  let scriptElement = document.createElement('script');
   scriptElement.src = 'https://public.flourish.studio/resources/embed.js'
   container.appendChild(scriptElement)
   flourishParent.appendChild(container)
@@ -190,10 +190,40 @@ document.addEventListener('DOMContentLoaded', () => {
     interactive: false
   })
 
+
+
   const qs = (s) => document.querySelector(s)
   const dateLabelElement = qs("#date-label")
   const caseCountElement = qs("#case-count")
   const caseCountParentElement = qs("#case-count-wrap")
+  const legendsParentElement = qs(".legends-wrapper")
+
+  const resetLegendsComponent = () => {
+    legendsParentElement.innerHTML = ''
+  }
+  const createLegendComponent = (theme, visuals, text) => {
+    const legend = document.createElement('div')
+    legend.className = `legend theme-${ theme }`
+    const legendVisual = document.createElement('div')
+    legendVisual.className = 'legend-visual'
+    visuals.forEach((visual, index) => {
+      const legendVisualCircle = document.createElement('div')
+      legendVisualCircle.className = 'legend-visual-circle'
+      if (index > 0) {
+        legendVisualCircle.classList.add('more')
+      }
+      legendVisualCircle.style.backgroundColor = visual
+      legendVisual.appendChild(legendVisualCircle)
+    });
+    const legendText = document.createElement('p')
+    legendText.className = `legend-text theme-${ theme }`
+    legendText.innerHTML = text
+    
+    legend.appendChild(legendVisual)
+    legend.appendChild(legendText)
+    legendsParentElement.appendChild(legend)
+  }
+
 
   var center = [7.9, 9.5] // default center
 
@@ -455,42 +485,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
       switch (chapterName) {
         case 'nigeria-wild-1':
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
+          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
         case 'nigeria-wild-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           var from = chapterName === 'nigeria-wild-1' ? 'start' : 'peak';
           var to = chapterName === 'nigeria-wild-1' ? 'peak' : 'end';
           animatePolioCases('wild-polio', { to, from })
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
+          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
           break;
-        case 'nigeria-variant-1':
+        case 'nigeria-variant-1':          
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000"], 'Plop')
         case 'nigeria-variant-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000"], 'Plop')
           if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
           break;
         case 'nigeria-risk-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-risk-2':
           animateExpandingPolio();
+          resetLegendsComponent()
+          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-vaccine-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
           map.setLayoutProperty('nigeria-fill', 'visibility', 'visible')
           animateVaccineHeatmap('immunized-population');
+          resetLegendsComponent()
+          createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-community-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          resetLegendsComponent()
+          createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
         case 'polio-eradication-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
+          resetLegendsComponent()
+          createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
         case 'polio-eradication-2':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          resetLegendsComponent()
+          createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
       }
 
