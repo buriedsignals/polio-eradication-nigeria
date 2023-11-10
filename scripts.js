@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  /* Modal script */
   document.querySelectorAll('.modal-button').forEach(trigger => {
     const infoIconContainer = document.createElement("span")
     infoIconContainer.setAttribute('class','modal-button-icon')
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const navWrapper = document.querySelector('.nav-wrapper')
   
+  /* Burger script */
   document.querySelectorAll('.burger-button').forEach(trigger => {
     trigger.addEventListener('click', () => {
       navWrapper.classList.add('is-burger')
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
+  /* Nav script */
   function romanize(num) {
     if (isNaN(num))
         return NaN;
@@ -50,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function obCallback(entries, observer) {
     entries.forEach(entry => {
-      entry.target.classList.remove('is-active')
+      entry.target.classList.remove('is-intersect')
+      document.body.classList.remove('map-label-theme-light')
       navWrapper.querySelectorAll('.nav-scroll').forEach(trigger => {
         trigger.classList.remove('theme-light')
       })
@@ -58,7 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.classList.remove('theme-light')
       })
       if(entry.isIntersecting) {
-        entry.target.classList.add('is-active')
+        entry.target.classList.add('is-intersect')
+        if (entry.target.parentElement.classList.contains('chapter')) {
+          document.querySelectorAll('.chapter').forEach(trigger => {
+            trigger.classList.remove('is-active')
+          })
+          entry.target.parentElement.classList.add('is-active')
+        }
       }
     });
   }
@@ -69,19 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let totalHeightPage = document.body.scrollHeight
   document.addEventListener('scroll', () => {
+    const intersectTarget = document.querySelector('.is-intersect')
     const currentTarget = document.querySelector('.chapter.is-active')
-    if (currentTarget && window.pageYOffset + currentTarget.offsetTop > window.innerHeight) {
-      if (currentTarget.classList.contains('page-light-container')) {
+    if (intersectTarget && window.pageYOffset + intersectTarget.offsetTop > window.innerHeight) {
+      if (intersectTarget.classList.contains('theme-light')) {
+        document.body.classList.add('map-label-theme-light')
         navWrapper.querySelectorAll('.nav-scroll').forEach(trigger => {
           trigger.classList.add('theme-light')
         })
       } else {
         navWrapper.querySelectorAll('.nav-scroll').forEach(trigger => {
+          document.body.classList.remove('map-label-theme-light')
           trigger.classList.remove('theme-light')
         })
       }
       document.querySelectorAll('.nav-link').forEach(trigger => {
-        if (currentTarget.classList.contains('page-light-container')) {
+        if (intersectTarget.classList.contains('theme-light')) {
           trigger.classList.add('theme-light')
         } else {
           trigger.classList.remove('theme-light')
@@ -116,8 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
   })
-  document.querySelectorAll('.chapter').forEach(trigger => {
+  document.querySelectorAll('.section').forEach(trigger => {
     ob.observe(trigger);
+  })
+  document.querySelectorAll('.chapter').forEach(trigger => {
     let id = ''
     let chapter = ''
     trigger.classList.forEach(target => {
@@ -132,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.setAttribute('data-index',`${ navChapterLenght }`)
     const newNavLink = document.createElement("div")
     newNavLink.setAttribute('class','nav-link')
+    newNavLink.setAttribute('data-index',`${ navChapterLenght }`)
     const newNavChapter = document.createElement("a")
     newNavChapter.setAttribute('href',`#${ id }`)
-    newNavChapter.setAttribute('data-index',`${ navChapterLenght }`)
     const newNavChapterText = document.createTextNode(`${ romanize(navChapterLenght) }. ${ chapter }`)
     newNavChapter.appendChild(newNavChapterText)
     newNavLink.appendChild(newNavChapter)
@@ -147,7 +162,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.nav-scroll-wrapper').appendChild(newNavChapterScroll)
   })
 
-  // Mapbox Scripts
+  /* Embed Flourish Script */
+
+  const flourishParent = document.querySelector('.add-flourish .mb-scrollytelling_content-wrapper .text-rich-text')
+  var container = document.createElement('div')
+  container.className = 'flourish-embed flourish-chart'
+  container.setAttribute('data-src', 'visualisation/15224980')
+  var scriptElement = document.createElement('script');
+  scriptElement.src = 'https://public.flourish.studio/resources/embed.js'
+  container.appendChild(scriptElement)
+  flourishParent.appendChild(container)
+
+  /* Mapbox Script */
   mapboxgl.accessToken = 'pk.eyJ1IjoiYnVyaWVkc2lnbmFscyIsImEiOiJjbDBhdmlhZTgwM3dtM2RxOTQ5cndsYXl0In0.Gvcq3DBOKDVRhy3QLjImiA'
 
   var darkPolioStyle = 'mapbox://styles/buriedsignals/clnaapgmw03md01qx182ndz1h'

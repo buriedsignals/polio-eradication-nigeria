@@ -105,12 +105,12 @@ a.modal-button.story:hover img {
   transition: all 0.35s ease-out;
 }
 
-#date-label {
-  font-family: Manrope;
-  font-weight: 500;
-  font-size: 32px;
-  z-index: 10;
+.map-label-theme-light .date-label, .map-label-theme-light .case-count-wrap {
+  color: var(--light-background);
 }
 .nav-scroll {
   transition: width 0.1s linear;
+}
+.section_mb-scrollytell {
+  overflow: hidden;
 }
