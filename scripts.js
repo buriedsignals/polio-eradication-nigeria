@@ -190,8 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     interactive: false
   })
 
-
-
   const qs = (s) => document.querySelector(s)
   const dateLabelElement = qs("#date-label")
   const caseCountElement = qs("#case-count")
@@ -268,10 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
       zoom: 5
     },
     'nigeria-community-1': {
-      center: [10.02, 5.9],
+      center: [11.83333, 13.150967],
       duration: 5000,
       bearing: 0,
-      zoom: 12
+      zoom: 9
     },
     'polio-eradication-1': {
       center: [10.02, 5.9],
@@ -388,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateEnd = keyDates[layerId][to]
     const dateStart = keyDates[layerId][from]
     const duration = options.duration ?? 15000
-    const dateWindow = options.dateWindow ?? 1000 * 60 * 60 * 24 * 365 * 0.5 // 6mo window
+    const dateWindow = options.dateWindow ?? 1000 * 60 * 60 * 24 * 365 // 12mo window
 
     dateLabelElement.style.display = "inline"
     caseCountParentElement.style.display = "inline"
@@ -431,7 +429,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update UI
       dateLabelElement.innerText = [d0, d1].map((d) => new Date(d).toLocaleDateString("en-US", {
         year: "numeric",
-        month: "short",
       })).join(" – ")
 
       caseCountElement.innerText = countPolioCases(layerId, (p) => p.dateInt >= d0 && p.dateInt <= d1)
