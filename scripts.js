@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
       zoom: 5
     },
     'nigeria-community-1': {
-      center: [11.83333, 13.150967],
+      center: [13.149859346174907, 11.828444442660588],
       duration: 5000,
       bearing: 0,
       zoom: 9
