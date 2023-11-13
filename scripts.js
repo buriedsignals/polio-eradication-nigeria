@@ -377,6 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
       peak: timestamp("2022-03-01"),
       end: timestamp("2024-12-31")
     },
+    "nigeria-community-cases": {
+      start: timestamp("2021-01-01"),
+      end: timestamp("2023-01-01")
+    },
   }
 
   var animationRefreshRate = 50 // update every 50ms
@@ -527,8 +531,15 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-community-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           resetLegendsComponent()
           createLegendComponent('light', ["#ff0000"], 'Plop')
+          animatePolioCases('nigeria-community-cases', {
+            to: keyDates['nigeria-community-cases'].end,
+            from: keyDates['nigeria-community-cases'].start,
+            duration: 2000, // Adjust duration as needed
+            dateWindow: 1000 * 60 * 60 * 24 * 365 // 1 year window
+          });
           break;
         case 'polio-eradication-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
