@@ -534,20 +534,17 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           resetLegendsComponent()
           createLegendComponent('light', ["#ff0000"], 'Plop')
-          animatePolioCases('nigeria-community-cases', {
-            to: keyDates['nigeria-community-cases'].end,
-            from: keyDates['nigeria-community-cases'].start,
-            duration: 2000, // Adjust duration as needed
-            dateWindow: 1000 * 60 * 60 * 24 * 365 // 1 year window
-          });
+          animatePolioCases('nigeria-community-cases', { to: 'end', from: 'start', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           break;
         case 'polio-eradication-1':
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
           createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
         case 'polio-eradication-2':
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           resetLegendsComponent()
           createLegendComponent('light', ["#ff0000"], 'Plop')
