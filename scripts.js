@@ -487,27 +487,27 @@ document.addEventListener('DOMContentLoaded', () => {
       switch (chapterName) {
         case 'nigeria-wild-1':
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
-          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
+          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a wild polio case')
         case 'nigeria-wild-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           var from = chapterName === 'nigeria-wild-1' ? 'start' : 'peak';
           var to = chapterName === 'nigeria-wild-1' ? 'peak' : 'end';
-          animatePolioCases('wild-polio', { to, from })
+          animatePolioCases('wild-polio', { to, from, duration: 6000 })
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
-          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
+          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a wild polio case')
           break;
         case 'nigeria-variant-1':          
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
+          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a wild polio case')
+          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colours represent variant emergence groups.')
         case 'nigeria-variant-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
+          createLegendComponent('dark', ["#ff0000"], 'Each dot represents a wild polio case')
+          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colours represent variant emergence groups.')
           if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
           break;
         case 'nigeria-risk-1':
