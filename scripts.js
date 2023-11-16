@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
       bearing: 0,
       zoom: 3.5
     },
-    'polio-eradication-2': {
+    'polio-eradication-3': {
       duration: 5000,
       bearing: 0,
       center: [10.02, 5.9],
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
 
   var lightPolioChapters = [
-    'nigeria-vaccine-1', 'nigeria-vaccine-2', 'nigeria-community-1', 'polio-eradication-1', 'polio-eradication-2'
+    'nigeria-vaccine-1', 'nigeria-vaccine-2', 'nigeria-community-1', 'polio-eradication-1', 'polio-eradication-3'
   ]
 
   function animateExpandingPolio() {
@@ -452,34 +452,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Animate markers down to zero based on 
   function animateMarkerRemoval(layerId, duration) {
-    let t0;
-    let lastPaint = 0;
-    const animationRefreshRate = 100; // in milliseconds
+
+    console.log("marker removal triggered")
+    let t0
+    let lastPaint = 0
+    const animationRefreshRate = 100 // in milliseconds
   
     // Determine the range of dateInt values
-    const features = map.queryRenderedFeatures({ layers: [layerId] });
-    const dateIntValues = features.map(f => f.properties.dateInt);
-    const minDateInt = Math.min(...dateIntValues);
-    const maxDateInt = Math.max(...dateIntValues);
+    const features = map.queryRenderedFeatures({ layers: [layerId] })
+    const dateIntValues = features.map(f => f.properties.dateInt)
+    const minDateInt = Math.min(...dateIntValues)
+    const maxDateInt = Math.max(...dateIntValues)
   
     const loop = (_t) => {
-      if (!t0) t0 = _t;
-      const t = _t - t0;
-      const progress = t / duration;
+      if (!t0) t0 = _t
+      const t = _t - t0
+      const progress = t / duration
   
       // Debounce to avoid excessive repaints
       if (t - lastPaint < animationRefreshRate) {
-        requestAnimationFrame(loop);
-        return;
+        requestAnimationFrame(loop)
+        return
       }
   
       if (progress >= 1) {
         // Ensure all markers are removed at the end
-        map.setPaintProperty(layerId, 'circle-opacity', 0);
-        return;
+        map.setPaintProperty(layerId, 'circle-opacity', 0)
+        return
       }
   
-      const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt);
+      const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt)
   
       // Set the opacity to 0 for markers with a dateInt less than the current threshold
       map.setPaintProperty(
@@ -490,13 +492,13 @@ document.addEventListener('DOMContentLoaded', () => {
           0,
           1
         ]
-      );
+      )
   
-      lastPaint = t;
-      requestAnimationFrame(loop);
+      lastPaint = t
+      requestAnimationFrame(loop)
     };
   
-    requestAnimationFrame(loop);
+    requestAnimationFrame(loop)
   }
   
   
@@ -595,9 +597,9 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
+          animateMarkerRemoval('nigeria-community-cases', 3000)
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a variant polio case')
-          animateMarkerRemoval('nigeria-community-cases', 5000)
           break;
         case 'polio-eradication-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
@@ -607,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
-        case 'polio-eradication-2':
+        case 'polio-eradication-3':
           animateMarkerRemoval('nigeria-2023-cases', 3000);
           break;
       }
