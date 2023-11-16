@@ -577,9 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
           resetLegendsComponent()
           break;
         case 'nigeria-vaccine-1':
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          console.log("vaccine-1 confirmed")
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           animateVaccineHeatmap('immunized-population');
           resetLegendsComponent()
           break;
@@ -598,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a variant polio case')
-          animateMarkerRemoval('nigeria-community-cases', 3000)
+          animateMarkerRemoval('nigeria-community-cases', 5000)
           break;
         case 'polio-eradication-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
