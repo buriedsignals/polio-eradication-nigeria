@@ -384,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     "nigeria-community-cases": {
       start: timestamp("2021-01-01"),
-      end: timestamp("2023-01-01")
+      end: timestamp("2024-12-31")
     },
   }
 
@@ -451,35 +451,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Animate markers down to zero, regardless of timestamp
-  function fadeOutMarkers(map, layerId, duration) {
-    let startTime = null;
+  function hideMarkers(map, layerId, duration) {
+    const features = map.queryRenderedFeatures({ layers: [layerId] });
   
-    function animateOpacity(timestamp) {
-      if (!startTime) startTime = timestamp;
-  
-      const elapsedTime = timestamp - startTime;
-      const progress = elapsedTime / duration;
-  
-      // Calculate the new opacity. It starts from 1 and goes down to 0.
-      const newOpacity = Math.max(1 - progress, 0);
-  
-      // Update the opacity of the markers
-      map.setPaintProperty(layerId, 'circle-opacity', newOpacity);
-  
-      if (elapsedTime < duration) {
-        // Continue the animation
-        requestAnimationFrame(animateOpacity);
-      } else {
-        // Ensure the final opacity is set to 0
-        map.setPaintProperty(layerId, 'circle-opacity', 0);
-      }
+    if (!features.length) {
+      console.log('No features found in the layer.');
+      return;
     }
   
-    // Start the animation
-    requestAnimationFrame(animateOpacity);
-  }
+    const totalMarkers = features.length;
+    const interval = duration / totalMarkers; // Time interval for each marker
+    let hiddenMarkers = []; // Array to keep track of hidden markers
   
-
+    features.forEach((feature, index) => {
+      setTimeout(() => {
+        // Assuming each feature has a unique 'id' property
+        const id = feature.properties.id;
+        hiddenMarkers.push(id);
+        // Apply a filter to hide all markers in the hiddenMarkers array
+        map.setFilter(layerId, ['!in', ['get', 'id'], ...hiddenMarkers]);
+      }, interval * index);
+    });
+  }  
+  
   // On scroll, check which element is on screen
   window.onscroll = function () {
     var chapterNames = Object.keys(chapters);
@@ -570,7 +564,6 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'nigeria-community-1':
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           resetLegendsComponent()
@@ -578,6 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
           animatePolioCases('nigeria-community-cases', { to: 'end', from: 'start', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           break;
         case 'polio-eradication-1':
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
           resetLegendsComponent()
@@ -585,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-2':
-          fadeOutMarkers(map, 'nigeria-2023-cases', 4000);
+          hideMarkers(map, 'nigeria-2023-cases', 4000);
           break;
       }
 
