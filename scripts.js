@@ -450,7 +450,52 @@ document.addEventListener('DOMContentLoaded', () => {
     polioAnimationHandler = requestAnimationFrame(loop)
   }
 
-  // Animate markers down to zero, regardless of timestamp
+  // Animate markers down to zero based on 
+  function animateMarkerRemoval(layerId, duration) {
+    let t0;
+    let lastPaint = 0;
+    const animationRefreshRate = 100; // in milliseconds
+  
+    // Assuming dateInt is a Unix timestamp in milliseconds
+    // Determine the range of dateInt values
+    const features = map.queryRenderedFeatures({ layers: [layerId] });
+    const dateIntValues = features.map(f => f.properties.dateInt);
+    const minDateInt = Math.min(...dateIntValues);
+    const maxDateInt = Math.max(...dateIntValues);
+  
+    const loop = (_t) => {
+      if (!t0) t0 = _t;
+      const t = _t - t0;
+      const progress = t / duration;
+  
+      // Debounce to avoid excessive repaints
+      if (t - lastPaint < animationRefreshRate) {
+        requestAnimationFrame(loop);
+        return;
+      }
+  
+      if (progress >= 1) return;
+  
+      const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt);
+  
+      // Set the opacity to 0 for markers with a dateInt less than the current threshold
+      map.setPaintProperty(
+        layerId,
+        'circle-opacity',
+        ['case',
+          ['<', ['get', 'dateInt'], currentThreshold],
+          0,
+          1
+        ]
+      );
+  
+      lastPaint = t;
+      requestAnimationFrame(loop);
+    };
+  
+    requestAnimationFrame(loop);
+  }
+  
   
   // On scroll, check which element is on screen
   window.onscroll = function () {
@@ -538,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'nigeria-community-1':
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
@@ -556,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-2':
-          hideMarkers(map, 'nigeria-2023-cases', 4000);
+          animateMarkerRemoval(map, 'nigeria-2023-cases', 4000);
           break;
       }
 
