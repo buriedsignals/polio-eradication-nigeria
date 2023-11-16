@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
     polioAnimationHandler = requestAnimationFrame(loop)
   }
 
-  // Animate markers down to zero based on 
+  // Animate markers down to zero
   function animateMarkerRemoval(layerId, duration) {
 
     console.log("marker removal triggered")
@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           animateMarkerRemoval('nigeria-community-cases', 3000)
           resetLegendsComponent()
-          createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a variant polio case')
+          createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
           break;
         case 'polio-eradication-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
