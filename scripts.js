@@ -450,6 +450,36 @@ document.addEventListener('DOMContentLoaded', () => {
     polioAnimationHandler = requestAnimationFrame(loop)
   }
 
+  // Animate markers down to zero, regardless of timestamp
+  function fadeOutMarkers(map, layerId, duration) {
+    let startTime = null;
+  
+    function animateOpacity(timestamp) {
+      if (!startTime) startTime = timestamp;
+  
+      const elapsedTime = timestamp - startTime;
+      const progress = elapsedTime / duration;
+  
+      // Calculate the new opacity. It starts from 1 and goes down to 0.
+      const newOpacity = Math.max(1 - progress, 0);
+  
+      // Update the opacity of the markers
+      map.setPaintProperty(layerId, 'circle-opacity', newOpacity);
+  
+      if (elapsedTime < duration) {
+        // Continue the animation
+        requestAnimationFrame(animateOpacity);
+      } else {
+        // Ensure the final opacity is set to 0
+        map.setPaintProperty(layerId, 'circle-opacity', 0);
+      }
+    }
+  
+    // Start the animation
+    requestAnimationFrame(animateOpacity);
+  }
+  
+
   // On scroll, check which element is on screen
   window.onscroll = function () {
     var chapterNames = Object.keys(chapters);
@@ -525,6 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
         case 'nigeria-vaccine-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-fill', 'visibility', 'visible')
           animateVaccineHeatmap('immunized-population');
           break;
@@ -541,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-community-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
+          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a variant polio case')
           animatePolioCases('nigeria-community-cases', { to: 'end', from: 'start', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
@@ -553,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-2':
-          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
+          fadeOutMarkers(map, 'nigeria-2023-cases', 4000);
           break;
       }
 
