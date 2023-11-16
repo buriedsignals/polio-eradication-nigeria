@@ -391,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var animationRefreshRate = 50 // update every 50ms
 
   function animatePolioCases(layerId, options = { to: "peak", from: "start" }) {
+    console.log("in the animation function")
     const { to, from } = options
     const dateEnd = keyDates[layerId][to]
     const dateStart = keyDates[layerId][from]
@@ -529,9 +530,9 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
         case 'nigeria-vaccine-2':
           console.log("hitting the vaccine 2 chapter")
+          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           map.setLayoutProperty('immunized-population', 'visibility', 'none')
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
-          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
@@ -545,15 +546,14 @@ document.addEventListener('DOMContentLoaded', () => {
           animatePolioCases('nigeria-community-cases', { to: 'end', from: 'start', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           break;
         case 'polio-eradication-1':
+          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
-          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-2':
-          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           break;
       }
 
