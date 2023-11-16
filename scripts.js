@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
         case 'nigeria-community-1':
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a variant polio case')
@@ -601,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-2':
-          animateMarkerRemoval(map, 'nigeria-2023-cases', 4000);
+          animateMarkerRemoval('nigeria-2023-cases', 4000);
           break;
       }
 
