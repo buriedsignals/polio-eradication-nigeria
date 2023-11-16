@@ -452,14 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Animate markers down to zero
   function animateMarkerRemoval(layerId, duration) {
-
-    console.log("marker removal triggered")
     let t0
     let lastPaint = 0
     const animationRefreshRate = 100 // in milliseconds
   
     // Determine the range of dateInt values
     const features = map.queryRenderedFeatures({ layers: [layerId] })
+    console.log(features, 'queried Features')
     const dateIntValues = features.map(f => f.properties.dateInt)
     const minDateInt = Math.min(...dateIntValues)
     const maxDateInt = Math.max(...dateIntValues)
