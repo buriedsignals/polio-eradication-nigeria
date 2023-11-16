@@ -518,13 +518,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-risk-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-risk-2':
           animateExpandingPolio();
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-vaccine-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
@@ -532,12 +528,14 @@ document.addEventListener('DOMContentLoaded', () => {
           animateVaccineHeatmap('immunized-population');
           break;
         case 'nigeria-vaccine-2':
-          map.setLayoutProperty('immunized-population', 'visibility', 'none')
           console.log("hitting the vaccine 2 chapter")
+          map.setLayoutProperty('immunized-population', 'visibility', 'none')
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
+          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'nigeria-community-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
