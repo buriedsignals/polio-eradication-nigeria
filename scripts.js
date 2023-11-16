@@ -319,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var vaccineAnimationHandler
 
   function animateVaccineHeatmap(layerId, options = { duration: 6000 }) {
+    console.log('heatmap function called')
     map.setPaintProperty(layerId, "fill-opacity", 1)
     map.setPaintProperty(layerId, "fill-color", "#e6dec1")
 
@@ -380,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "variant-polio": {
       start: timestamp("2010-02-17"),
       peak: timestamp("2022-03-01"),
-      end: timestamp("2024-12-31")
+      end: timestamp("2023-11-01")
     },
     "nigeria-community-cases": {
       start: timestamp("2021-01-01"),
@@ -391,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
   var animationRefreshRate = 50 // update every 50ms
 
   function animatePolioCases(layerId, options = { to: "peak", from: "start" }) {
-    console.log("in the animation function")
     const { to, from } = options
     const dateEnd = keyDates[layerId][to]
     const dateStart = keyDates[layerId][from]
@@ -451,28 +451,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Animate markers down to zero, regardless of timestamp
-  function hideMarkers(map, layerId, duration) {
-    const features = map.queryRenderedFeatures({ layers: [layerId] });
-  
-    if (!features.length) {
-      console.log('No features found in the layer.');
-      return;
-    }
-  
-    const totalMarkers = features.length;
-    const interval = duration / totalMarkers; // Time interval for each marker
-    let hiddenMarkers = []; // Array to keep track of hidden markers
-  
-    features.forEach((feature, index) => {
-      setTimeout(() => {
-        // Assuming each feature has a unique 'id' property
-        const id = feature.properties.id;
-        hiddenMarkers.push(id);
-        // Apply a filter to hide all markers in the hiddenMarkers array
-        map.setFilter(layerId, ['!in', ['get', 'id'], ...hiddenMarkers]);
-      }, interval * index);
-    });
-  }  
   
   // On scroll, check which element is on screen
   window.onscroll = function () {
@@ -548,13 +526,12 @@ document.addEventListener('DOMContentLoaded', () => {
           animateExpandingPolio();
           break;
         case 'nigeria-vaccine-1':
-          map.setLayoutProperty('immunized-population', 'visibility', 'visible')
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          map.setLayoutProperty('nigeria-fill', 'visibility', 'visible')
+          console.log("vaccine-1 confirmed")
+          map.setLayoutProperty('immunized-population', 'visibility', 'visible')
           animateVaccineHeatmap('immunized-population');
           break;
         case 'nigeria-vaccine-2':
-          console.log("hitting the vaccine 2 chapter")
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           map.setLayoutProperty('immunized-population', 'visibility', 'none')
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
