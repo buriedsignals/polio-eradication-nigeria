@@ -533,6 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
         case 'nigeria-vaccine-2':
           map.setLayoutProperty('immunized-population', 'visibility', 'none')
+          console.log("hitting the vaccine 2 chapter")
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
           createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
