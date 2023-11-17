@@ -458,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Determine the range of dateInt values
     const features = map.queryRenderedFeatures({ layers: [layerId] })
-    console.log(features, 'queried Features')
     const dateIntValues = features.map(f => f.properties.dateInt)
     const minDateInt = Math.min(...dateIntValues)
     const maxDateInt = Math.max(...dateIntValues)
