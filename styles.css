@@ -106,7 +106,7 @@ a.modal-button.story:hover img {
 }
 
 .map-label-theme-light .date-label, .map-label-theme-light .case-count-wrap {
-  color: var(--light-background);
+  color: var(--red-accent);
 }
 .nav-scroll {
   transition: width 0.1s linear;

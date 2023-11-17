@@ -448,7 +448,15 @@ document.addEventListener('DOMContentLoaded', () => {
     var chapterNames = Object.keys(chapters);
     for (var i = 0; i < chapterNames.length; i++) {
       var chapterName = chapterNames[i];
-      var offset = (chapterName === 'nigeria-risk-2') ? -window.innerHeight * 0.5 : 0; // 50vh offset
+      var offset = 0
+      switch (chapterName) {
+        case 'nigeria-risk-2':
+          offset = -window.innerHeight * 0.5
+          break;
+        case 'nigeria-vaccine-1':
+          offset = window.innerHeight * 0.75
+          break;
+      }
       if (isElementOnScreen(chapterName, offset)) {
         setActiveChapter(chapterName);
         break;
@@ -555,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function isElementOnScreen(id, offset = 0) {
     var element = qs(`#${id}`)
+    if (!element) return false
     var bounds = element.getBoundingClientRect()
     return bounds.top < (window.innerHeight + offset) && bounds.bottom > 300
   }
