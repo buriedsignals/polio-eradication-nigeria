@@ -190,8 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     interactive: false
   })
 
-
-
   const qs = (s) => document.querySelector(s)
   const dateLabelElement = qs("#date-label")
   const caseCountElement = qs("#case-count")
@@ -267,18 +265,23 @@ document.addEventListener('DOMContentLoaded', () => {
       center,
       zoom: 5
     },
+    'nigeria-vaccine-2': {
+      bearing: 0,
+      center,
+      zoom: 4
+    },
     'nigeria-community-1': {
-      center: [10.02, 5.9],
+      center: [13.149859346174907, 11.828444442660588],
       duration: 5000,
       bearing: 0,
-      zoom: 12
+      zoom: 9
     },
     'polio-eradication-1': {
       center: [10.02, 5.9],
       bearing: 0,
       zoom: 3.5
     },
-    'polio-eradication-2': {
+    'polio-eradication-3': {
       duration: 5000,
       bearing: 0,
       center: [10.02, 5.9],
@@ -291,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
 
   var lightPolioChapters = [
-    'nigeria-vaccine-1', 'nigeria-community-1', 'polio-eradication-1', 'polio-eradication-2'
+    'nigeria-vaccine-1', 'nigeria-vaccine-2', 'nigeria-community-1', 'polio-eradication-1', 'polio-eradication-3'
   ]
 
   function animateExpandingPolio() {
@@ -316,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var vaccineAnimationHandler
 
   function animateVaccineHeatmap(layerId, options = { duration: 6000 }) {
+    console.log('heatmap function called')
     map.setPaintProperty(layerId, "fill-opacity", 1)
     map.setPaintProperty(layerId, "fill-color", "#e6dec1")
 
@@ -377,6 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
     "variant-polio": {
       start: timestamp("2010-02-17"),
       peak: timestamp("2022-03-01"),
+      end: timestamp("2023-11-01")
+    },
+    "nigeria-community-cases": {
+      start: timestamp("2021-01-01"),
       end: timestamp("2024-12-31")
     },
   }
@@ -388,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateEnd = keyDates[layerId][to]
     const dateStart = keyDates[layerId][from]
     const duration = options.duration ?? 15000
-    const dateWindow = options.dateWindow ?? 1000 * 60 * 60 * 24 * 365 * 0.5 // 6mo window
+    const dateWindow = options.dateWindow ?? 1000 * 60 * 60 * 24 * 365 // 12mo window
 
     dateLabelElement.style.display = "inline"
     caseCountParentElement.style.display = "inline"
@@ -431,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update UI
       dateLabelElement.innerText = [d0, d1].map((d) => new Date(d).toLocaleDateString("en-US", {
         year: "numeric",
-        month: "short",
       })).join(" – ")
 
       caseCountElement.innerText = countPolioCases(layerId, (p) => p.dateInt >= d0 && p.dateInt <= d1)
@@ -443,6 +450,58 @@ document.addEventListener('DOMContentLoaded', () => {
     polioAnimationHandler = requestAnimationFrame(loop)
   }
 
+  // Animate markers down to zero
+  function animateMarkerRemoval(layerId, duration) {
+    let t0
+    let lastPaint = 0
+    const animationRefreshRate = 100 // in milliseconds
+  
+    // Determine the range of dateInt values
+    const features = map.queryRenderedFeatures({ layers: [layerId] })
+    console.log(features, 'queried Features')
+    const dateIntValues = features.map(f => f.properties.dateInt)
+    const minDateInt = Math.min(...dateIntValues)
+    const maxDateInt = Math.max(...dateIntValues)
+  
+    const loop = (_t) => {
+      if (!t0) t0 = _t
+      const t = _t - t0
+      const progress = t / duration
+  
+      // Debounce to avoid excessive repaints
+      if (t - lastPaint < animationRefreshRate) {
+        requestAnimationFrame(loop)
+        return
+      }
+  
+      if (progress >= 1) {
+        // Ensure all markers are removed at the end
+        map.setPaintProperty(layerId, 'circle-opacity', 0)
+        return
+      }
+  
+      const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt)
+  
+      // Set the opacity to 0 for markers with a dateInt less than the current threshold
+      map.setPaintProperty(
+        layerId,
+        'circle-opacity',
+        ['case',
+          ['<', ['get', 'dateInt'], currentThreshold],
+          0,
+          1
+        ]
+      )
+  
+      lastPaint = t
+      requestAnimationFrame(loop)
+    };
+  
+    requestAnimationFrame(loop)
+  }
+  
+  
+  
   // On scroll, check which element is on screen
   window.onscroll = function () {
     var chapterNames = Object.keys(chapters);
@@ -494,63 +553,71 @@ document.addEventListener('DOMContentLoaded', () => {
       switch (chapterName) {
         case 'nigeria-wild-1':
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
-          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
+          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
         case 'nigeria-wild-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           var from = chapterName === 'nigeria-wild-1' ? 'start' : 'peak';
           var to = chapterName === 'nigeria-wild-1' ? 'peak' : 'end';
-          animatePolioCases('wild-polio', { to, from })
+          animatePolioCases('wild-polio', { to, from, duration: 6000 })
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000", "#ff00ff", "#0000ff"], 'Hello world')
-          createLegendComponent('dark', ["#ff0000"], 'zer azer es')
+          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
           break;
         case 'nigeria-variant-1':          
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
+          createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
         case 'nigeria-variant-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
+          createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
           break;
         case 'nigeria-risk-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-risk-2':
           animateExpandingPolio();
           resetLegendsComponent()
-          createLegendComponent('dark', ["#ff0000"], 'Plop')
           break;
         case 'nigeria-vaccine-1':
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
-          map.setLayoutProperty('nigeria-fill', 'visibility', 'visible')
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
           animateVaccineHeatmap('immunized-population');
           resetLegendsComponent()
-          createLegendComponent('light', ["#ff0000"], 'Plop')
           break;
-        case 'nigeria-community-1':
-          map.setLayoutProperty('immunized-population', 'visibility', 'none');
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          resetLegendsComponent()
-          createLegendComponent('light', ["#ff0000"], 'Plop')
-          break;
-        case 'polio-eradication-1':
+        case 'nigeria-vaccine-2':
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
+          map.setLayoutProperty('immunized-population', 'visibility', 'none')
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
           animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
           resetLegendsComponent()
-          createLegendComponent('light', ["#ff0000"], 'Plop')
+          createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
-        case 'polio-eradication-2':
+        case 'nigeria-community-1':
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
+          animateMarkerRemoval('nigeria-community-cases', 3000)
           resetLegendsComponent()
-          createLegendComponent('light', ["#ff0000"], 'Plop')
+          createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
+          break;
+        case 'polio-eradication-1':
+          map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
+          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
+          resetLegendsComponent()
+          createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+          break;
+        case 'polio-eradication-3':
+          animateMarkerRemoval('nigeria-2023-cases', 3000);
           break;
       }
 
