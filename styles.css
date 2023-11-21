@@ -2,6 +2,7 @@ html {
   height: auto;
   overflow-x: hidden;
 }
+.main-wrapper ‹<
 .text-underline-effect {
   position: relative;
   display: inline-block;
@@ -90,13 +91,6 @@ html {
   transform: translate3D(2.5px, 0, 0);
   transition: all 0.35s ease-out;
 }
-a.modal-button {
-  transition: all 0.35s ease-in;
-}
-a.modal-button:hover {
-  font-weight: 600;
-  transition: all 0.35s ease-out;
-}
 a.modal-button.story img {
   transition: all 0.35s ease-in;
 }
@@ -106,6 +100,36 @@ a.modal-button.story:hover img {
 }
 
 .map-label-theme-light .date-label, .map-label-theme-light .case-count-wrap {
+  color: var(--red-accent);
+}
+.cursor-close .cursor-close-circle {
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+.cursor-close .cursor-close-cross {
+  background-color: var(--eggshell);
+}
+.map-label-theme-light .cursor-close .cursor-close-circle {
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+.map-label-theme-light .cursor-close .cursor-close-cross {
+  background-color: var(--red-accent);
+}
+.button-close {
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+.button-close .icon-cross-line {
+  background-color: var(--eggshell);
+}
+.button-close .button-close-text {
+  color: var(--eggshell);
+}
+.map-label-theme-light .button-close {
+  border: 1px solid var(--red-accent);
+}
+.map-label-theme-light .button-close .icon-cross-line {
+  background-color: var(--red-accent);
+}
+.map-label-theme-light .button-close .button-close-text {
   color: var(--red-accent);
 }
 .nav-scroll {
