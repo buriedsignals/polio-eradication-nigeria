@@ -382,11 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
       start: timestamp("2010-02-17"),
       peak: timestamp("2022-03-01"),
       end: timestamp("2023-11-01")
-    },
-    "nigeria-community-cases": {
-      start: timestamp("2021-01-01"),
-      end: timestamp("2024-12-31")
-    },
+    }
   }
 
   var animationRefreshRate = 50 // update every 50ms
@@ -450,56 +446,64 @@ document.addEventListener('DOMContentLoaded', () => {
     polioAnimationHandler = requestAnimationFrame(loop)
   }
 
-  // Animate markers down to zero
   function animateMarkerRemoval(layerId, duration) {
-    let t0
-    let lastPaint = 0
-    const animationRefreshRate = 100 // in milliseconds
-  
-    // Determine the range of dateInt values
-    const features = map.queryRenderedFeatures({ layers: [layerId] })
-    const dateIntValues = features.map(f => f.properties.dateInt)
-    const minDateInt = Math.min(...dateIntValues)
-    const maxDateInt = Math.max(...dateIntValues)
-  
-    const loop = (_t) => {
-      if (!t0) t0 = _t
-      const t = _t - t0
-      const progress = t / duration
-  
-      // Debounce to avoid excessive repaints
-      if (t - lastPaint < animationRefreshRate) {
-        requestAnimationFrame(loop)
-        return
-      }
-  
-      if (progress >= 1) {
-        // Ensure all markers are removed at the end
-        map.setPaintProperty(layerId, 'circle-opacity', 0)
-        return
-      }
-  
-      const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt)
-  
-      // Set the opacity to 0 for markers with a dateInt less than the current threshold
-      map.setPaintProperty(
-        layerId,
-        'circle-opacity',
-        ['case',
-          ['<', ['get', 'dateInt'], currentThreshold],
-          0,
-          1
-        ]
-      )
-  
-      lastPaint = t
-      requestAnimationFrame(loop)
-    };
-  
-    requestAnimationFrame(loop)
-  }
-  
-  
+    let t0;
+    let lastPaint = 0;
+    const animationRefreshRate = 100; // in milliseconds
+
+    function startAnimation() {
+        const features = map.queryRenderedFeatures({ layers: [layerId] });
+        if (features.length === 0) {
+            // If no features are found, wait and try again
+            requestAnimationFrame(startAnimation);
+            return;
+        }
+
+        const dateIntValues = features.map(f => f.properties.dateInt);
+        const minDateInt = Math.min(...dateIntValues);
+        const maxDateInt = Math.max(...dateIntValues);
+
+        console.log("marker removal features", features);
+
+        const loop = (_t) => {
+            if (!t0) t0 = _t;
+            const t = _t - t0;
+            const progress = t / duration;
+
+            // Debounce to avoid excessive repaints
+            if (t - lastPaint < animationRefreshRate) {
+                requestAnimationFrame(loop);
+                return;
+            }
+
+            if (progress >= 1) {
+                // Ensure all markers are removed at the end
+                map.setPaintProperty(layerId, 'circle-opacity', 0);
+                return;
+            }
+
+            const currentThreshold = minDateInt + progress * (maxDateInt - minDateInt);
+
+            // Set the opacity to 0 for markers with a dateInt less than the current threshold
+            map.setPaintProperty(
+                layerId,
+                'circle-opacity',
+                ['case',
+                    ['<', ['get', 'dateInt'], currentThreshold],
+                    0,
+                    1
+                ]
+            );
+
+            lastPaint = t;
+            requestAnimationFrame(loop);
+        };
+
+        requestAnimationFrame(loop);
+    }
+
+    map.once('idle', startAnimation);
+} 
   
   // On scroll, check which element is on screen
   window.onscroll = function () {
