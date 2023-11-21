@@ -584,10 +584,12 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-risk-1':
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
+          caseCountElement.style.display = "none"
           resetLegendsComponent()
           break;
         case 'nigeria-risk-2':
           animateExpandingPolio();
+          caseCountElement.style.display = "none"
           resetLegendsComponent()
           break;
         case 'nigeria-vaccine-1':
@@ -610,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
+          caseCountElement.style.display = "none"
           resetLegendsComponent()
           createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
           animateMarkerRemoval('nigeria-community-cases', 3000)
