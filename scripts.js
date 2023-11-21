@@ -524,6 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var activeChapterName = 'nigeria-wild-2'
   var currentStyle = darkPolioStyle
+  var loaded = false
 
   function setActiveChapter(chapterName) {
     if (chapterName === activeChapterName) return
@@ -539,91 +540,97 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetStyle !== currentStyle) {
       map.setStyle(targetStyle)
       map.on('style.load', () => {
-        currentStyle = targetStyle
+        const waiting = () => {
+          if (!map.isStyleLoaded()) {
+            setTimeout(waiting, 50);
+          } else {
+            currentStyle = targetStyle
+            updateChapter()
+          }
+        };
+        waiting();
       })
+    } else {
+      updateChapter();
     }
 
-    updateChapter()
-
     function updateChapter() {
-      // Only update chapter after style has loaded
-      if (currentStyle !== targetStyle) return setTimeout(() => updateChapter(), 50)
-
-      switch (chapterName) {
-        case 'nigeria-wild-1':
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
-        case 'nigeria-wild-2':
-          map.setLayoutProperty('wild-polio', 'visibility', 'visible');
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          var from = chapterName === 'nigeria-wild-1' ? 'start' : 'peak';
-          var to = chapterName === 'nigeria-wild-1' ? 'peak' : 'end';
-          animatePolioCases('wild-polio', { to, from, duration: 6000 })
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
-          break;
-        case 'nigeria-variant-1':          
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
-        case 'nigeria-variant-2':
-          map.setLayoutProperty('wild-polio', 'visibility', 'none');
-          map.setLayoutProperty('expanding-polio', 'visibility', 'none');
-          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
-          resetLegendsComponent()
-          createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
-          if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
-          break;
-        case 'nigeria-risk-1':
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
-          resetLegendsComponent()
-          break;
-        case 'nigeria-risk-2':
-          animateExpandingPolio();
-          resetLegendsComponent()
-          break;
-        case 'nigeria-vaccine-1':
-          map.setLayoutProperty('immunized-population', 'visibility', 'visible')
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          resetLegendsComponent()
-          animateVaccineHeatmap('immunized-population');
-          break;
-        case 'nigeria-vaccine-2':
-          map.setLayoutProperty('variant-polio', 'visibility', 'visible');
-          map.setLayoutProperty('immunized-population', 'visibility', 'none')
-          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
-          resetLegendsComponent()
-          createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
-          animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
-          break;
-        case 'nigeria-community-1':
-          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
-          resetLegendsComponent()
-          createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
-          animateMarkerRemoval('nigeria-community-cases', 3000)
-          break;
-        case 'polio-eradication-1':
-          map.setLayoutProperty('variant-polio', 'visibility', 'none');
-          map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
-          map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
-          resetLegendsComponent()
-          createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
-          createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
-          break;
-        case 'polio-eradication-3':
-          animateMarkerRemoval('nigeria-2023-cases', 3000);
-          break;
-      }
-
-      qs(`#${chapterName}`).setAttribute('class', 'active')
-      qs(`#${activeChapterName}`).setAttribute('class', '')
-
-      activeChapterName = chapterName
+        switch (chapterName) {
+          case 'nigeria-wild-1':
+            resetLegendsComponent()
+            createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
+          case 'nigeria-wild-2':
+            map.setLayoutProperty('wild-polio', 'visibility', 'visible');
+            map.setLayoutProperty('variant-polio', 'visibility', 'none');
+            var from = chapterName === 'nigeria-wild-1' ? 'start' : 'peak';
+            var to = chapterName === 'nigeria-wild-1' ? 'peak' : 'end';
+            animatePolioCases('wild-polio', { to, from, duration: 6000 })
+            resetLegendsComponent()
+            createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
+            break;
+          case 'nigeria-variant-1':          
+            resetLegendsComponent()
+            createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+            createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+          case 'nigeria-variant-2':
+            map.setLayoutProperty('wild-polio', 'visibility', 'none');
+            map.setLayoutProperty('expanding-polio', 'visibility', 'none');
+            map.setLayoutProperty('variant-polio', 'visibility', 'visible');
+            resetLegendsComponent()
+            createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+            createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+            if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
+            break;
+          case 'nigeria-risk-1':
+            map.setLayoutProperty('variant-polio', 'visibility', 'none');
+            map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
+            resetLegendsComponent()
+            break;
+          case 'nigeria-risk-2':
+            animateExpandingPolio();
+            resetLegendsComponent()
+            break;
+          case 'nigeria-vaccine-1':
+            map.setLayoutProperty('immunized-population', 'visibility', 'visible')
+            map.setLayoutProperty('variant-polio', 'visibility', 'none');
+            resetLegendsComponent()
+            animateVaccineHeatmap('immunized-population');
+            break;
+          case 'nigeria-vaccine-2':
+            map.setLayoutProperty('variant-polio', 'visibility', 'visible');
+            map.setLayoutProperty('immunized-population', 'visibility', 'none')
+            map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
+            resetLegendsComponent()
+            createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+            createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+            animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
+            break;
+          case 'nigeria-community-1':
+            map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
+            map.setLayoutProperty('variant-polio', 'visibility', 'none');
+            map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
+            resetLegendsComponent()
+            createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
+            animateMarkerRemoval('nigeria-community-cases', 3000)
+            break;
+          case 'polio-eradication-1':
+            map.setLayoutProperty('variant-polio', 'visibility', 'none');
+            map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
+            map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
+            resetLegendsComponent()
+            createLegendComponent('light', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
+            createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+            break;
+          case 'polio-eradication-3':
+            animateMarkerRemoval('nigeria-2023-cases', 3000);
+            break;
+        }
+  
+        qs(`#${chapterName}`).setAttribute('class', 'active')
+        qs(`#${activeChapterName}`).setAttribute('class', '')
+  
+        activeChapterName = chapterName
+      // }
     }
   }
 
