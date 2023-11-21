@@ -463,6 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const minDateInt = Math.min(...dateIntValues);
         const maxDateInt = Math.max(...dateIntValues);
 
+        console.log("marker removal features", features);
+
         const loop = (_t) => {
             if (!t0) t0 = _t;
             const t = _t - t0;
@@ -493,13 +495,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
             );
 
-            // Update UI
-            dateLabelElement.innerText = new Date(currentThreshold).toLocaleDateString("en-US", {
-              year: "numeric"
-          });
-
-            caseCountElement.innerText = features.filter(f => f.properties.dateInt >= currentThreshold).length;
-
             lastPaint = t;
             requestAnimationFrame(loop);
         };
@@ -509,7 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     map.once('idle', startAnimation);
 }
-
   
   // On scroll, check which element is on screen
   window.onscroll = function () {
@@ -620,6 +614,8 @@ document.addEventListener('DOMContentLoaded', () => {
             animatePolioCases('variant-polio', { to: 'end', from: 'peak', duration: 8000, dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ })
             break;
           case 'nigeria-community-1':
+            caseCountParentElement.style.display = "none"
+            dateLabelElement.style.display = "none"
             map.setLayoutProperty('nigeria-community-cases', 'visibility', 'visible');
             map.setLayoutProperty('variant-polio', 'visibility', 'none');
             map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
@@ -628,6 +624,8 @@ document.addEventListener('DOMContentLoaded', () => {
             animateMarkerRemoval('nigeria-community-cases', 3000)
             break;
           case 'polio-eradication-1':
+            caseCountParentElement.style.display = "none"
+            dateLabelElement.style.display = "none"
             map.setLayoutProperty('variant-polio', 'visibility', 'none');
             map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'visible');
             map.setLayoutProperty('nigeria-community-cases', 'visibility', 'none');
