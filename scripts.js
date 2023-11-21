@@ -553,6 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-wild-1':
           resetLegendsComponent()
           createLegendComponent('dark', ["#F4693D"], 'Each dot represents a child paralyzed by wild polio')
+          break;
         case 'nigeria-wild-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
@@ -566,6 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
           resetLegendsComponent()
           createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
           createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
+          break;
         case 'nigeria-variant-2':
           map.setLayoutProperty('wild-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'none');
@@ -585,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
           resetLegendsComponent()
           break;
         case 'nigeria-vaccine-1':
+          console.log("switch statement triggered, test")
           map.setLayoutProperty('immunized-population', 'visibility', 'visible')
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
           resetLegendsComponent()
