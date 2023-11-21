@@ -461,6 +461,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateIntValues = features.map(f => f.properties.dateInt)
     const minDateInt = Math.min(...dateIntValues)
     const maxDateInt = Math.max(...dateIntValues)
+    console.log("marker removal features", features)
+    console.log("marker removal dates", dateIntValues)
   
     const loop = (_t) => {
       if (!t0) t0 = _t
