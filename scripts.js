@@ -463,8 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const minDateInt = Math.min(...dateIntValues);
         const maxDateInt = Math.max(...dateIntValues);
 
-        console.log("marker removal features", features);
-
         const loop = (_t) => {
             if (!t0) t0 = _t;
             const t = _t - t0;
@@ -495,6 +493,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
             );
 
+            // Update UI
+            dateLabelElement.innerText = new Date(currentThreshold).toLocaleDateString("en-US", {
+              year: "numeric"
+          });
+
+            caseCountElement.innerText = features.filter(f => f.properties.dateInt >= currentThreshold).length;
+
             lastPaint = t;
             requestAnimationFrame(loop);
         };
@@ -503,7 +508,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     map.once('idle', startAnimation);
-} 
+}
+
   
   // On scroll, check which element is on screen
   window.onscroll = function () {
@@ -589,11 +595,13 @@ document.addEventListener('DOMContentLoaded', () => {
             map.setLayoutProperty('variant-polio', 'visibility', 'none');
             map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
             caseCountParentElement.style.display = "none"
+            dateLabelElement.style.display = "none"
             resetLegendsComponent()
             break;
           case 'nigeria-risk-2':
             animateExpandingPolio();
             caseCountParentElement.style.display = "none"
+            dateLabelElement.style.display = "none"
             resetLegendsComponent()
             break;
           case 'nigeria-vaccine-1':
