@@ -319,48 +319,52 @@ document.addEventListener('DOMContentLoaded', () => {
   var vaccineAnimationHandler
 
   function animateVaccineHeatmap(layerId, options = { duration: 6000 }) {
-    console.log('heatmap function called')
-    map.setPaintProperty(layerId, "fill-opacity", 1)
-    map.setPaintProperty(layerId, "fill-color", "#e6dec1")
+    map.setPaintProperty(layerId, "fill-opacity", 1);
+    map.setPaintProperty(layerId, "fill-color", "#e6dec1");
 
-    const min = 5857784
-    const max = 17984889
-    const range = max - min
-    const duration = options.duration ?? 6000
+    const min = 5857784;
+    const max = 17984889;
+    const range = max - min;
+    const duration = options.duration ?? 6000;
 
-    dateLabelElement.style.display = "none"
-    caseCountParentElement.style.display = "none"
-    cancelAnimationFrame(polioAnimationHandler)
-    cancelAnimationFrame(vaccineAnimationHandler)
+    dateLabelElement.style.display = "none";
+    caseCountParentElement.style.display = "none";
+    cancelAnimationFrame(polioAnimationHandler);
+    cancelAnimationFrame(vaccineAnimationHandler);
 
-    var t0
+    var t0;
 
     const loop = (_t) => {
-      if (!t0) t0 = _t
-      const t = _t - t0
-      const progress = t / duration
+        if (!t0) t0 = _t;
+        const t = _t - t0;
+        const progress = t / duration;
 
-      if (progress >= 1) return cancelAnimationFrame(vaccineAnimationHandler)
+        if (progress >= 1) {
+            cancelAnimationFrame(vaccineAnimationHandler);
+            vaccineAnimationHandler = null; // Reset the handler
+            return;
+        }
 
-      // Animate from [max, max + range] to [min, max]
-      map.setPaintProperty(
-        layerId,
-        'fill-color',
-        [
-          "interpolate",
-          ["linear"],
-          ["get", "total_immunized"],
-          max - progress * range - 1,
-          "#e6dec1",
-          max + (1 - progress) * range,
-          "#94da92"
-        ]
-      )
+        // Animation logic
+        map.setPaintProperty(
+            layerId,
+            'fill-color',
+            [
+                "interpolate",
+                ["linear"],
+                ["get", "total_immunized"],
+                max - progress * range - 1,
+                "#e6dec1",
+                max + (1 - progress) * range,
+                "#94da92"
+            ]
+        );
 
-      vaccineAnimationHandler = requestAnimationFrame(loop)
-    }
-    vaccineAnimationHandler = requestAnimationFrame(loop)
-  }
+        vaccineAnimationHandler = requestAnimationFrame(loop);
+    };
+
+    vaccineAnimationHandler = requestAnimationFrame(loop);
+}
 
   // # features whose properties satisfy a condition
   function countPolioCases(layerId, condition = () => true) {
@@ -462,8 +466,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateIntValues = features.map(f => f.properties.dateInt);
         const minDateInt = Math.min(...dateIntValues);
         const maxDateInt = Math.max(...dateIntValues);
-
-        console.log("marker removal features", features);
 
         const loop = (_t) => {
             if (!t0) t0 = _t;
