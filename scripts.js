@@ -588,10 +588,12 @@ document.addEventListener('DOMContentLoaded', () => {
           case 'nigeria-risk-1':
             map.setLayoutProperty('variant-polio', 'visibility', 'none');
             map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
+            caseCountParentElement.style.display = "none"
             resetLegendsComponent()
             break;
           case 'nigeria-risk-2':
             animateExpandingPolio();
+            caseCountParentElement.style.display = "none"
             resetLegendsComponent()
             break;
           case 'nigeria-vaccine-1':
