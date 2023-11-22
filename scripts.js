@@ -248,6 +248,11 @@ document.addEventListener('DOMContentLoaded', () => {
       bearing: 0,
       zoom: 5.25
     },
+    'nigeria-northern': {
+      center,
+      bearing: 0,
+      zoom: 5.25
+    },
     'nigeria-risk-1': {
       duration: 5000,
       bearing: 0,
@@ -290,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   var darkPolioChapters = [
-    'nigeria-wild-2', 'nigeria-wild-1', 'nigeria-variant-1', 'nigeria-variant-2', 'nigeria-risk-2', 'nigeria-risk-1'
+    'nigeria-wild-2', 'nigeria-wild-1', 'nigeria-variant-1', 'nigeria-variant-2', 'nigeria-risk-2', 'nigeria-risk-1', 'nigeria-northern'
   ]
 
   var lightPolioChapters = [
@@ -559,6 +564,8 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('dark', ["#F8CD6B"], 'Each dot represents a child paralyzed by variant polio')
           createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
         case 'nigeria-variant-2':
+          map.setLayoutProperty('northern-states', 'visibility', 'none');
+          map.setLayoutProperty('northern-states-borders', 'visibility', 'none');
           map.setLayoutProperty('wild-polio', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'none');
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
@@ -567,8 +574,15 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('dark', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           if (chapterName === 'nigeria-variant-1') { animatePolioCases('variant-polio', { to: 'peak', from: 'start', dateWindow: 1000 * 60 * 60 * 24 * 365 /* 12mo window */ }) }
           break;
-        case 'nigeria-risk-1':
+        case 'nigeria-northern':
+          map.setLayoutProperty('northern-states', 'visibility', 'visible');
+          map.setLayoutProperty('northern-states-borders', 'visibility', 'visible');
           map.setLayoutProperty('variant-polio', 'visibility', 'none');
+          resetLegendsComponent()
+          break;
+        case 'nigeria-risk-1':
+          map.setLayoutProperty('northern-states', 'visibility', 'none');
+          map.setLayoutProperty('northern-states-borders', 'visibility', 'none');
           map.setLayoutProperty('expanding-polio', 'visibility', 'visible');
           caseCountParentElement.style.display = "none"
           dateLabelElement.style.display = "none"
