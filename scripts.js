@@ -256,12 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
     'nigeria-risk-1': {
       duration: 5000,
       bearing: 0,
-      center: [10.119, 5.97],
+      center: [1.011, 5.97],
       zoom: 3
     },
     'nigeria-risk-2': {
       duration: 5000,
-      center: [10.019, 5.9],
+      center: [1.011, 5.9],
       bearing: 0,
       zoom: 3
     },
@@ -282,14 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
       zoom: 9
     },
     'polio-eradication-1': {
-      center: [10.02, 5.9],
+      center: [1.011, 5.9],
       bearing: 0,
       zoom: 3.5
     },
     'polio-eradication-3': {
       duration: 5000,
       bearing: 0,
-      center: [10.02, 5.9],
+      center: [1.011, 5.9],
       zoom: 3.5
     }
   }
