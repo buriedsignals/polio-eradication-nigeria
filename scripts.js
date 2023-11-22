@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  var center = [7.9, 9.5] // default center
+  var center = [4.9, 9.5] // default center
 
   var chapters = {
     'nigeria-wild-1': {
