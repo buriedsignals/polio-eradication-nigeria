@@ -319,7 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
   var vaccineAnimationHandler
 
   function animateVaccineHeatmap(layerId, options = { duration: 6000 }) {
-    console.log("animate")
     map.setPaintProperty(layerId, "fill-opacity", 1);
     map.setPaintProperty(layerId, "fill-color", "#e6dec1");
 
@@ -538,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
     qs(`#${chapterName}`).setAttribute('class', 'active')
     qs(`#${activeChapterName}`).setAttribute('class', '')
     activeChapterName = chapterName
-    console.log('ok')
 
     map.flyTo({ padding: { left: 200 }, ...chapters[chapterName] })
 
@@ -571,7 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     function updateChapter() {
-      console.log('update')
       switch (chapterName) {
         case 'nigeria-wild-1':
           resetLegendsComponent()
