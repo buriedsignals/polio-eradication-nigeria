@@ -173,6 +173,38 @@ document.addEventListener('DOMContentLoaded', () => {
   container.appendChild(scriptElement)
   flourishParent.appendChild(container)
 
+  /* Copy button */
+  const copyButton = document.querySelector('.copy')
+  console.log('ok', copyButton)
+  copyButton.addEventListener('click', copyClipboard)
+  function copyClipboard(e) {
+    e.preventDefault()
+    var textArea = document.createElement("textarea");
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = 0;
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.value = "https://nigeria.makepoliohistory.org";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      var copied = document.execCommand('copy');
+      if (copied) {
+        alert('The text has been copied!');
+      }
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+    document.body.removeChild(textArea);
+  }
+
   /* Mapbox Script */
   mapboxgl.accessToken = 'pk.eyJ1IjoiYnVyaWVkc2lnbmFscyIsImEiOiJjbDBhdmlhZTgwM3dtM2RxOTQ5cndsYXl0In0.Gvcq3DBOKDVRhy3QLjImiA'
 
