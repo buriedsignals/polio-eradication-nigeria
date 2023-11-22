@@ -615,6 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
             map.setLayoutProperty('immunized-population', 'visibility', 'visible')
             animateVaccineHeatmap('immunized-population');
           }
+          createLegendComponent('light', ["#94da92"], 'Shadings represent concentrations of vaccinations')
           resetLegendsComponent()
           break;
         case 'nigeria-vaccine-2':
