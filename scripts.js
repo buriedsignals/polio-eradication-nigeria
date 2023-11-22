@@ -546,27 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? darkPolioStyle
         : currentStyle
 
-        // map.on('load', function() {
-          updateChapter()
-        // })
-
-
-    // if (targetStyle !== currentStyle) {
-    //   map.setStyle(targetStyle)
-    //   map.on('style.load', () => {
-    //     const waiting = () => {
-    //       if (!map.isStyleLoaded()) {
-    //         setTimeout(waiting, 50);
-    //       } else {
-    //         currentStyle = targetStyle
-    //         updateChapter()
-    //       }
-    //     };
-    //     waiting();
-    //   })
-    // } else {
-      // updateChapter();
-    // }
+    updateChapter()
 
     function updateChapter() {
       switch (chapterName) {
@@ -648,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
           map.setLayoutProperty('nigeria-2023-cases', 'visibility', 'none');
           resetLegendsComponent()
           createLegendComponent('light', ["#709CF2"], 'Each dot represents a variant polio case')
-          // animateMarkerRemoval('nigeria-community-cases', 3000)
+          animateMarkerRemoval('nigeria-community-cases', 3000)
           break;
         case 'polio-eradication-1':
           caseCountParentElement.style.display = "none"
@@ -661,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
           createLegendComponent('light', ["#CFDFFF", "#EAAB1D"], 'Different colors represent distinct families of the virus')
           break;
         case 'polio-eradication-3':
-          // animateMarkerRemoval('nigeria-2023-cases', 3000);
+          animateMarkerRemoval('nigeria-2023-cases', 3000);
           break;
       }
     }
