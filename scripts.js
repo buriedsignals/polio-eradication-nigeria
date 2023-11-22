@@ -252,13 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
       duration: 5000,
       bearing: 0,
       center: [10.119, 5.97],
-      zoom: 4.5
+      zoom: 3
     },
     'nigeria-risk-2': {
       duration: 5000,
       center: [10.019, 5.9],
       bearing: 0,
-      zoom: 3.5
+      zoom: 3
     },
     'nigeria-vaccine-1': {
       bearing: 0,
@@ -298,22 +298,14 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
 
   function animateExpandingPolio() {
-    var red = '#803118'
+    var red = '#803118';  // Color for all other countries
     map.setPaintProperty('expanding-polio', 'fill-color', [
-      'match',
-      ['get', 'name_en'],
-      'Nigeria', '#f8cd6b',
-      'Chad', red,
-      'Cameroon', red,
-      'Niger', red,
-      'Benin', red,
-      'Ghana', red,
-      'Burkina Faso', red,
-      'Mali', red,
-      'Togo', red,
-      'transparent'  // Default
-    ])
-  }
+        'match',
+        ['get', 'name_en'],
+        'Nigeria', '#f8cd6b',  // Nigeria shaded with this specific color
+        red,                    // All other countries shaded red
+    ]);
+}
 
   var polioAnimationHandler
   var vaccineAnimationHandler
