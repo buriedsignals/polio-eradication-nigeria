@@ -174,7 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
   flourishParent.appendChild(container)
 
   // Add Maiduguri image
-  const imageParent = document.querySelector('.add-flourish .mb-scrollytelling_content-wrapper .text-rich-text:last-child')
+  const imageParentDiv = document.getElementById('nigeria-community-1')
+  const imageParent = imageParentDiv.querySelector('.text-rich-text')
+  console.log(imageParent)
   let imageContainer = document.createElement('div')
   imageContainer.className = 'image-container_borno'
   let imageElement = document.createElement('img')
