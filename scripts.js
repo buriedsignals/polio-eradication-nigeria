@@ -173,6 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
   container.appendChild(scriptElement)
   flourishParent.appendChild(container)
 
+  // Add Maiduguri image
+  const imageParent = document.querySelector('.add-flourish .mb-scrollytelling_content-wrapper .text-rich-text:last-child')
+  let imageContainer = document.createElement('div')
+  imageContainer.className = 'image-container_borno'
+  let imageElement = document.createElement('img')
+  imageElement.src = 'https://uploads-ssl.webflow.com/65323ee33f55c1a97dd6dcc3/655dca9d880a17cfee2e2083_borno_aerial2.webp'
+  imageElement.alt = 'Aerial view of Maiduguri'
+  imageContainer.appendChild(imageElement)
+  imageParent.appendChild(imageContainer)
+
   /* Copy button */
   const copyButton = document.querySelector('.copy')
   console.log('ok', copyButton)

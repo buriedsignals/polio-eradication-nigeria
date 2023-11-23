@@ -137,3 +137,10 @@ a.modal-button.story:hover img {
 .section_mb-scrollytell {
   overflow: hidden;
 }
+
+.image-container_borno img {
+  width: 100%;
+  height: auto;
+  max-width: 100%; /* Optional, ensures image is not larger than its natural size */
+  display: block; /* Removes any extra space below the image */
+}
