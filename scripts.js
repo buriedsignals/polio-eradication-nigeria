@@ -561,6 +561,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'nigeria-vaccine-1':
           offset = window.innerHeight * 0.75
           break;
+        case 'nigeria-risk-1':
+          offset = window.innerHeight * 0.75
+          break;
       }
       if (isElementOnScreen(chapterName, offset)) {
         setActiveChapter(chapterName);
