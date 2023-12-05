@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "wild-polio": {
       start: timestamp("2001-01-11"),
       peak: timestamp("2008-10-10"),
-      end: timestamp("2015-05-01")
+      end: timestamp("2016-01-01")
     },
     "variant-polio": {
       start: timestamp("2010-02-17"),
@@ -662,8 +662,8 @@ document.addEventListener('DOMContentLoaded', () => {
             map.setLayoutProperty('immunized-population', 'visibility', 'visible')
             animateVaccineHeatmap('immunized-population');
           }
-          createLegendComponent('light', ["#94da92"], 'Shadings represent concentrations of vaccinations')
           resetLegendsComponent()
+          createLegendComponent('light', ["#94da92"], 'Shadings represent number of SIAs completed')
           break;
         case 'nigeria-vaccine-2':
           map.setLayoutProperty('variant-polio', 'visibility', 'visible');
