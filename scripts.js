@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let container = document.createElement('div')
   container.className = 'flourish-embed flourish-chart'
   container.setAttribute('data-src', 'visualisation/15224980')
+  container.setAttribute('data-width', '100%')
   let scriptElement = document.createElement('script');
   scriptElement.src = 'https://public.flourish.studio/resources/embed.js'
   container.appendChild(scriptElement)

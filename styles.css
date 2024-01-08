@@ -144,3 +144,12 @@ a.modal-button.story:hover img {
   max-width: 100%; /* Optional, ensures image is not larger than its natural size */
   display: block; /* Removes any extra space below the image */
 }
+
+#nigeria-vaccine-1 {
+  width: 100%;
+}
+
+.mb-scrollytelling_content-wrapper .flourish-embed {
+  width: 100%;
+  min-width: 100%;
+}
