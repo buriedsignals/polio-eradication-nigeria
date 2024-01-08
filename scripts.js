@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var map = new mapboxgl.Map({
     container: 'map',
     style: darkPolioStyle,
-    center: [12.02, 5.97],
+    center: [9.4, 8.7],
     zoom: 2,
     pitch: 0,
     bearing: 0,
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  var center = [4.9, 9.5] // default center
+  var center = [9.4, 8.7] // default center
 
   var chapters = {
     'nigeria-wild-1': {
